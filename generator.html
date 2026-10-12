@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Link Undangan - Fadli & Nofita</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-5 font-sans">
+    <div class="bg-white p-8 rounded-xl shadow-xl w-full max-w-lg">
+        <h2 class="text-2xl font-extrabold text-center text-amber-800 mb-6 uppercase tracking-wider">Buat Link Undangan</h2>
+
+        <div class="mb-4">
+            <label for="namaTamu" class="block text-sm font-bold text-gray-700 mb-2">Nama Tamu</label>
+            <input type="text" id="namaTamu" class="w-full border-2 border-gray-300 p-3 rounded-lg focus:outline-none focus:border-amber-700 font-medium" placeholder="Contoh: Budi Santoso">
+        </div>
+
+        <!-- Tombol Buat Link -->
+        <button onclick="buatLink()" class="w-full bg-amber-800 text-white font-bold py-3 rounded-lg hover:bg-amber-900 transition duration-300 mb-6 shadow-md">
+            Buat Pesan & Link
+        </button>
+
+        <div class="mb-4">
+            <label for="hasilPesan" class="block text-sm font-bold text-gray-700 mb-2">Hasil Teks WhatsApp</label>
+            <textarea id="hasilPesan" rows="10" class="w-full border-2 border-gray-300 p-3 rounded-lg focus:outline-none bg-gray-50 text-sm" readonly></textarea>
+        </div>
+
+        <!-- Tombol Salin -->
+        <button onclick="salinPesan()" id="btnSalin" class="w-full bg-gray-800 text-white font-bold py-3 rounded-lg hover:bg-black transition duration-300 flex justify-center items-center gap-2 shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+            Salin Pesan
+        </button>
+    </div>
+
+    <script>
+        function buatLink() {
+            const nama = document.getElementById('namaTamu').value.trim();
+            
+            if (!nama) {
+                alert('Silakan masukkan nama tamu terlebih dahulu!');
+                return;
+            }
+
+            // Mengubah spasi menjadi format URL yang benar (%20)
+            const namaUrl = encodeURIComponent(nama);
+            
+            // Domain otomatis menggunakan domain .site yang baru
+            const linkUndangan = `https://fadlinofita.site/?to=${namaUrl}`;
+
+            const templatePesan = `Bismillahirahmanirrahim.
+Assalamu'alaikum Warahmatullahi Wabarakatuh.
+
+Tanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i:
+
+*${nama}*
+
+Untuk hadir dan memberikan doa restu pada acara pernikahan kami.
+Detail acara & lokasi dapat dilihat pada link undangan digital berikut:
+
+👉 ${linkUndangan}
+
+Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.
+
+Wassalamu'alaikum Warahmatullahi Wabarakatuh.
+Hormat kami,
+*Fadli & Nofita*`;
+
+            document.getElementById('hasilPesan').value = templatePesan;
+            
+            // Reset tombol salin
+            const btn = document.getElementById('btnSalin');
+            btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg> Salin Pesan`;
+            btn.classList.remove('bg-green-600');
+            btn.classList.add('bg-gray-800');
+        }
+
+        function salinPesan() {
+            const hasilPesan = document.getElementById('hasilPesan');
+            
+            if (!hasilPesan.value) {
+                alert('Buat pesan terlebih dahulu sebelum menyalin!');
+                return;
+            }
+
+            // Proses copy ke clipboard
+            hasilPesan.select();
+            hasilPesan.setSelectionRange(0, 99999); // Kompatibilitas untuk mobile
+            navigator.clipboard.writeText(hasilPesan.value).then(() => {
+                const btn = document.getElementById('btnSalin');
+                btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Tersalin!`;
+                btn.classList.remove('bg-gray-800');
+                btn.classList.add('bg-green-600');
+            });
+        }
+    </script>
+</body>
+</html>
